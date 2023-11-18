@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Tomato Timer (Apple)</title>
     <link rel="stylesheet" href="main.css">
+    <script src="main.js"></script>
 </head>
 <body>
 
@@ -65,10 +66,15 @@
             <path id="1.12" class="st7" d="M589.73,366.55c0-6.58-4.06-12.17-9.7-14.2c-4.31-7.21-12.4-12.07-21.68-12.07
 	c-9.39,0-17.57,4.98-21.84,12.34c-5.28,2.22-9,7.62-9,13.93c0,7.97,5.94,14.48,13.44,14.98c4.5,4.2,10.64,6.79,17.41,6.79
 	c6.76,0,12.88-2.58,17.38-6.77C583.5,381.35,589.73,374.71,589.73,366.55z"/>
-            <path id="" class="st8" d="M493.5,404.5c6.89,5.39,34.1,25.34,73,23c31.03-1.87,52.26-16.89,60.03-23"/>
+            <path id="1.13" class="st8" d="M493.5,404.5c6.89,5.39,34.1,25.34,73,23c31.03-1.87,52.26-16.89,60.03-23"/>
 </svg>
         </a>
+        <p id="timer-output">00:00:00</p>
+        <button onclick="startTimer()">Start</button>
+        <button onclick="pauseTimer()">Pause</button>
+        <button onclick="resetTimer()">Reset</button>
     </div>
+
 </main>
 
 </body>
