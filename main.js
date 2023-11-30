@@ -5,6 +5,17 @@ let isTimerRunning = false;
 //default, granted, denied
 console.log(Notification.permission)
 
+const imageSlider = document.getElementById('image-slider');
+
+let currentIndex = 0;
+
+imageSlider.addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % imageSlider.children.length;
+    showImage(currentIndex);
+});
+
+showImage(currentIndex);
+
 function showNotification() {
     const notification = new Notification("Alarm", {
         body: 'Time is out',
@@ -61,4 +72,9 @@ function updateTimerDisplay() {
         resetTimer();
     }
     document.getElementById('timer-output').innerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}:${String(milliseconds).padStart(2, '0')}`;
+}
+
+function showImage(index) {
+    const translateValue = -index * 100 + '%';
+    imageSlider.style.transform = `translateX(${translateValue})`;
 }
