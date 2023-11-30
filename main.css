@@ -30,3 +30,31 @@ main {
     width: 100%;
     height: auto;
 }
+
+#timer-output {
+    font-family: "Courier New", Courier, monospace;
+    text-align: center;
+    font-size: 6rem;
+    font-weight: 400;
+    margin: 1rem 0;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0;
+}
+
+.buttons button {
+    background-color: midnightblue;
+    color: #fff;
+    border: 0;
+    border-radius: 0.25rem;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    margin: 1rem 0.5rem;
+}
