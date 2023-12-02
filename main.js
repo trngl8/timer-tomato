@@ -57,6 +57,7 @@ function resetTimer() {
     clearInterval(timer.time);
     timer.isTimerRunning = false;
     timer.time = 0;
+    document.getElementById('start-button').innerText = 'Start';
     document.getElementById('timer-output').innerText = `${String(timer.time).padStart(2, '0')}:${String(timer.time).padStart(2, '0')}:${String(timer.time).padStart(2, '0')}`;
 }
 
