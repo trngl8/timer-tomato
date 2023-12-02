@@ -36,7 +36,9 @@ function startTimer() {
         console.log('started');
         timer.isTimerRunning = true;
         button.innerText = 'Pause';
-        timer.time = setInterval(updateTimer, 10);
+        if (timer.time === 0) {
+            timer.time = setInterval(updateTimer, 10);
+        }
     } else {
         console.log('paused');
         pauseTimer();
@@ -46,7 +48,7 @@ function startTimer() {
 }
 
 function pauseTimer() {
-    clearInterval(timer.time);
+    clearTimeout(timer.time);
     timer.isTimerRunning = false;
     updateTimerDisplay();
 }
