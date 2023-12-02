@@ -36,7 +36,9 @@ function startTimer() {
         console.log('started');
         timer.isTimerRunning = true;
         button.innerText = 'Pause';
-        timer.time = setInterval(updateTimer, 10);
+        if (timer.time === 0) {
+            timer.time = setInterval(updateTimer, 10);
+        }
     } else {
         console.log('paused');
         pauseTimer();
@@ -46,7 +48,7 @@ function startTimer() {
 }
 
 function pauseTimer() {
-    clearInterval(timer.time);
+    clearTimeout(timer.time);
     timer.isTimerRunning = false;
     updateTimerDisplay();
 }
@@ -55,6 +57,7 @@ function resetTimer() {
     clearInterval(timer.time);
     timer.isTimerRunning = false;
     timer.time = 0;
+    document.getElementById('start-button').innerText = 'Start';
     document.getElementById('timer-output').innerText = `${String(timer.time).padStart(2, '0')}:${String(timer.time).padStart(2, '0')}:${String(timer.time).padStart(2, '0')}`;
 }
 
