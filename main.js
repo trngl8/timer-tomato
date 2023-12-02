@@ -1,20 +1,11 @@
-let timer;
-let time = 0;
-let isTimerRunning = false;
+let timer = {
+    minutes: 25,
+    time: 0,
+    isTimerRunning: false,
+}
 
 //default, granted, denied
 console.log(Notification.permission)
-
-const imageSlider = document.getElementById('image-slider');
-
-let currentIndex = 0;
-
-imageSlider.addEventListener('click', () => {
-    currentIndex = (currentIndex + 1) % imageSlider.children.length;
-    showImage(currentIndex);
-});
-
-showImage(currentIndex);
 
 function showNotification() {
     const notification = new Notification("Alarm", {
@@ -40,41 +31,49 @@ function checkPermission() {
 }
 
 function startTimer() {
-    if (!isTimerRunning) {
-        isTimerRunning = true;
-        timer = setInterval(updateTimer, 10);
+    let button = document.getElementById('start-button');
+    if (timer.isTimerRunning === false) {
+        console.log('started');
+        timer.isTimerRunning = true;
+        button.innerText = 'Pause';
+        timer.time = setInterval(updateTimer, 10);
+    } else {
+        console.log('paused');
+        pauseTimer();
+        button.innerText = 'Start';
     }
+
 }
 
 function pauseTimer() {
-    clearInterval(timer);
-    isTimerRunning = false;
-}
-
-function resetTimer() {
-    clearInterval(timer);
-    isTimerRunning = false;
-    time = 0;
+    clearInterval(timer.time);
+    timer.isTimerRunning = false;
     updateTimerDisplay();
 }
 
+function resetTimer() {
+    clearInterval(timer.time);
+    timer.isTimerRunning = false;
+    timer.time = 0;
+    document.getElementById('timer-output').innerText = `${String(timer.time).padStart(2, '0')}:${String(timer.time).padStart(2, '0')}:${String(timer.time).padStart(2, '0')}`;
+}
+
 function updateTimer() {
-    time++;
+    timer.time++;
     updateTimerDisplay();
 }
 
 function updateTimerDisplay() {
-    const minutes = Math.floor(time / (60 * 100));
-    const seconds = Math.floor((time % (60 * 100)) / 100);
-    const milliseconds = time % 100;
-    if (minutes === 25) {
+    if (!timer.isTimerRunning) {
+        return;
+    }
+
+    const minutes = Math.floor(timer.time / (60 * 100));
+    const seconds = Math.floor((timer.time % (60 * 100)) / 100);
+    const milliseconds = timer.time % 100;
+    if (minutes === timer.minutes) {
         checkPermission();
         resetTimer();
     }
     document.getElementById('timer-output').innerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}:${String(milliseconds).padStart(2, '0')}`;
-}
-
-function showImage(index) {
-    const translateValue = -index * 100 + '%';
-    imageSlider.style.transform = `translateX(${translateValue})`;
 }

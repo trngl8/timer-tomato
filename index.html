@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Tomato Timer (Apple)</title>
     <link rel="stylesheet" href="main.css">
+    <script src="main.js"></script>
 </head>
 <body>
 
@@ -18,14 +19,16 @@
             </div>
         </div>
         <p id="timer-output">00:00:00</p>
-        <div class="buttons">
-            <button onclick="startTimer()">Start</button>
-            <button onclick="pauseTimer()">Pause</button>
-            <button onclick="resetTimer()">Reset</button>
+        <div>
+            <div id="main-button" class="buttons">
+                <button id="start-button" class="btn-lg" onclick="startTimer()">Start</button>
+            </div>
+            <div id="second-button" class="buttons">
+                <button id="reset-button" class="btn-sm" onclick="resetTimer()">Reset</button>
+            </div>
         </div>
     </div>
-
 </main>
-<script src="main.js"></script>
+<script src="slider.js"></script>
 </body>
 </html>
