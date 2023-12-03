@@ -80,3 +80,7 @@ function updateTimerDisplay() {
     }
     document.getElementById('timer-output').innerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}:${String(milliseconds).padStart(2, '0')}`;
 }
+
+function settingsPage() {
+    window.location.href = "settings.html";
+}
