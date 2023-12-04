@@ -22,6 +22,8 @@ function showNotification() {
     notification.onclick = (e) => {
         window.location.href = "#";
     }
+
+    console.log("notification sent");
 }
 
 function checkPermission() {
