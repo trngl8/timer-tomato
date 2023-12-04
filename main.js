@@ -1,5 +1,11 @@
+let storage = window.localStorage;
+
+const MINUTES = parseInt(storage.getItem('minutes') || 25);
+
+console.log(MINUTES);
+
 let timer = {
-    minutes: 25,
+    minutes: MINUTES,
     time: 0,
     isTimerRunning: false,
 }
@@ -83,4 +89,8 @@ function updateTimerDisplay() {
 
 function settingsPage() {
     window.location.href = "settings.html";
+}
+
+function saveSettings() {
+    storage.setItem('minutes', document.getElementById('work-time').value);
 }
