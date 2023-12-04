@@ -45,7 +45,7 @@ main {
     margin: 1rem 0;
 }
 
-.buttons button {
+BUTTON {
     color: #fff;
     border: 0;
     border-radius: 0.25rem;
@@ -53,13 +53,19 @@ main {
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    margin: 1rem 0.5rem;
+    margin: 1rem 0;
+}
+
+SELECT {
+    font-size: 1rem;
+    padding: 0.5rem;
+    margin: 1rem 0;
 }
 
 .btn-lg {
     background-color: midnightblue;
     font-size: 1.5rem;
-    padding: 1.5rem 3rem;
+    padding: 1rem 4rem;
 }
 
 .btn-lg:hover {
@@ -76,5 +82,10 @@ main {
 .btn-sm:hover {
     background-color: #1f1f1f;
 }
+
+.mr-1 {
+    margin-right: 1rem;
+}
+
 
 

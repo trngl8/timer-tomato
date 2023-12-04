@@ -1,5 +1,11 @@
+let storage = window.localStorage;
+
+const MINUTES = parseInt(storage.getItem('minutes') || 25);
+
+console.log(MINUTES);
+
 let timer = {
-    minutes: 25,
+    minutes: MINUTES,
     time: 0,
     isTimerRunning: false,
 }
@@ -16,6 +22,8 @@ function showNotification() {
     notification.onclick = (e) => {
         window.location.href = "#";
     }
+
+    console.log("notification sent");
 }
 
 function checkPermission() {
@@ -79,4 +87,12 @@ function updateTimerDisplay() {
         resetTimer();
     }
     document.getElementById('timer-output').innerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}:${String(milliseconds).padStart(2, '0')}`;
+}
+
+function settingsPage() {
+    window.location.href = "settings.html";
+}
+
+function saveSettings() {
+    storage.setItem('minutes', document.getElementById('work-time').value);
 }
