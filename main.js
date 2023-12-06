@@ -1,15 +1,16 @@
 let storage = window.localStorage;
 
-const MINUTES = parseInt(storage.getItem('minutes') || 25);
-
-console.log(MINUTES);
+const DEFAULT_MINUTES = storage.getItem('minutes') || 25;
 
 let timer = {
-    minutes: MINUTES,
+    minutes: DEFAULT_MINUTES,
+    max: DEFAULT_MINUTES * 60 * 100,
     time: 0,
     isTimerRunning: false,
 }
 
+writeTime(timer.max - timer.time);
+console.log(DEFAULT_MINUTES);
 //default, granted, denied
 console.log(Notification.permission)
 
@@ -58,7 +59,7 @@ function startTimer() {
 function pauseTimer() {
     clearTimeout(timer.time);
     timer.isTimerRunning = false;
-    updateTimerDisplay();
+    updateTimerDisplay()
 }
 
 function resetTimer() {
@@ -66,12 +67,14 @@ function resetTimer() {
     timer.isTimerRunning = false;
     timer.time = 0;
     document.getElementById('start-button').innerText = 'Start';
-    document.getElementById('timer-output').innerText = `${String(timer.time).padStart(2, '0')}:${String(timer.time).padStart(2, '0')}:${String(timer.time).padStart(2, '0')}`;
+    writeTime(timer.max - timer.time);
 }
 
 function updateTimer() {
     timer.time++;
-    updateTimerDisplay();
+    if (timer.time < timer.max) {
+        updateTimerDisplay();
+    }
 }
 
 function updateTimerDisplay() {
@@ -79,14 +82,12 @@ function updateTimerDisplay() {
         return;
     }
 
-    const minutes = Math.floor(timer.time / (60 * 100));
-    const seconds = Math.floor((timer.time % (60 * 100)) / 100);
-    const milliseconds = timer.time % 100;
-    if (minutes === timer.minutes) {
+    if (timer.time >= timer.max) {
         checkPermission();
         resetTimer();
     }
-    document.getElementById('timer-output').innerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}:${String(milliseconds).padStart(2, '0')}`;
+
+    writeTime(timer.max - timer.time);
 }
 
 function settingsPage() {
@@ -95,4 +96,15 @@ function settingsPage() {
 
 function saveSettings() {
     storage.setItem('minutes', document.getElementById('work-time').value);
+}
+
+function writeTime(time) {
+    const minutes = Math.floor(time / (60 * 100));
+    const seconds = Math.floor((time % (60 * 100)) / 100);
+    const milliseconds = time % 100;
+
+    let output = document.getElementById('timer-output');
+    if (output !== null) {
+        output.innerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}:${String(milliseconds).padStart(2, '0')}`;
+    }
 }
