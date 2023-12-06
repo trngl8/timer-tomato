@@ -72,7 +72,7 @@ function resetTimer() {
 
 function updateTimer() {
     timer.time++;
-    if (timer.time < timer.max) {
+    if (timer.time <= timer.max) {
         updateTimerDisplay();
     }
 }
