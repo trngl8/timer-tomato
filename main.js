@@ -41,33 +41,36 @@ function checkPermission() {
 
 function startTimer() {
     let button = document.getElementById('start-button');
-    if (timer.isTimerRunning === false) {
-        console.log('started');
+    if (timer.isTimerRunning === false && timer.time < timer.max) {
         timer.isTimerRunning = true;
-        button.innerText = 'Pause';
         if (timer.time === 0) {
             timer.time = setInterval(updateTimer, 10);
+            console.log(`started at ${getTimeString(timer.time)}`);
         }
+        button.innerText = 'Pause';
+    } else if (timer.isTimerRunning === true && timer.time < timer.max) {
+        timer.isTimerRunning = false;
+        clearTimeout(timer.time);
+        console.log(`paused at ${getTimeString(timer.time)}`);
+        button.innerText = 'Resume';
     } else {
-        console.log('paused');
-        pauseTimer();
+        clearTimeout(timer.time);
+        timer.isTimerRunning = false;
+        updateTimerDisplay();
+        console.log(`paused at ${getTimeString(timer.time)}`);
         button.innerText = 'Start';
     }
 
 }
 
-function pauseTimer() {
-    clearTimeout(timer.time);
-    timer.isTimerRunning = false;
-    updateTimerDisplay()
-}
-
 function resetTimer() {
+    clearTimeout(timer.time);
     clearInterval(timer.time);
     timer.isTimerRunning = false;
     timer.time = 0;
+    console.log(`reset at ${getTimeString(timer.time)}`);
     document.getElementById('start-button').innerText = 'Start';
-    writeTime(timer.max - timer.time);
+    writeTime(timer.max - timer.time)
 }
 
 function updateTimer() {
@@ -78,13 +81,12 @@ function updateTimer() {
 }
 
 function updateTimerDisplay() {
-    if (!timer.isTimerRunning) {
-        return;
-    }
-
     if (timer.time >= timer.max) {
         checkPermission();
         resetTimer();
+    }
+    if (!timer.isTimerRunning) {
+        return;
     }
 
     writeTime(timer.max - timer.time);
@@ -98,13 +100,16 @@ function saveSettings() {
     storage.setItem('minutes', document.getElementById('work-time').value);
 }
 
-function writeTime(time) {
+function getTimeString(time) {
     const minutes = Math.floor(time / (60 * 100));
     const seconds = Math.floor((time % (60 * 100)) / 100);
     const milliseconds = time % 100;
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}:${String(milliseconds).padStart(2, '0')}`
+}
 
+function writeTime(time) {
     let output = document.getElementById('timer-output');
     if (output !== null) {
-        output.innerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}:${String(milliseconds).padStart(2, '0')}`;
+        output.innerText = getTimeString(time);
     }
 }
