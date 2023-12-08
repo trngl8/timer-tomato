@@ -3,16 +3,17 @@ let storage = window.localStorage;
 const DEFAULT_MINUTES = storage.getItem('minutes') || 25;
 
 let timer = {
+    timerId: null,
     minutes: DEFAULT_MINUTES,
     max: DEFAULT_MINUTES * 60 * 100,
+    startedAt: 0,
+    pausedAt: 0,
     time: 0,
-    isTimerRunning: false,
+    isRunning: false,
+    timeout: 10 // milliseconds
 }
 
 writeTime(timer.max - timer.time);
-console.log(DEFAULT_MINUTES);
-//default, granted, denied
-console.log(Notification.permission)
 
 function showNotification() {
     const notification = new Notification("Alarm", {
@@ -28,6 +29,8 @@ function showNotification() {
 }
 
 function checkPermission() {
+    //default, granted, denied
+    console.log(Notification.permission)
     if(Notification.permission === "granted") {
         showNotification();
     } else if(Notification.permission !== "denied") {
@@ -39,34 +42,35 @@ function checkPermission() {
     }
 }
 
-function startTimer() {
+function processTimer() {
     let button = document.getElementById('start-button');
-    if (timer.isTimerRunning === false && timer.time < timer.max) {
-        timer.isTimerRunning = true;
-        if (timer.time === 0) {
-            timer.time = setInterval(updateTimer, 10);
+    if (timer.isRunning === false) {
+        // Start timer
+        timer.timerId = setInterval(updateTimer, timer.timeout);
+        if (timer.startedAt === 0) {
+            timer.startedAt = Date.now();
             console.log(`started at ${getTimeString(timer.time)}`);
+        } else {
+            // Resume timer
+            console.log(`resumed at ${getTimeString(timer.time)}`);
         }
+        timer.pausedAt = Date.now();
+        timer.isRunning = true;
         button.innerText = 'Pause';
-    } else if (timer.isTimerRunning === true && timer.time < timer.max) {
-        timer.isTimerRunning = false;
-        clearTimeout(timer.time);
-        console.log(`paused at ${getTimeString(timer.time)}`);
-        button.innerText = 'Resume';
-    } else {
-        clearTimeout(timer.time);
-        timer.isTimerRunning = false;
-        updateTimerDisplay();
-        console.log(`paused at ${getTimeString(timer.time)}`);
-        button.innerText = 'Start';
+        return;
     }
-
+    // Pause timer
+    clearInterval(timer.timerId);
+    timer.timerId = null;
+    timer.isRunning = false;
+    console.log(`paused at ${getTimeString(timer.time)}`);
+    button.innerText = 'Resume';
 }
 
 function resetTimer() {
-    clearTimeout(timer.time);
-    clearInterval(timer.time);
-    timer.isTimerRunning = false;
+    clearTimeout(timer.timerId);
+    clearInterval(timer.timerId);
+    timer.isRunning = false;
     timer.time = 0;
     console.log(`reset at ${getTimeString(timer.time)}`);
     document.getElementById('start-button').innerText = 'Start';
@@ -85,7 +89,7 @@ function updateTimerDisplay() {
         checkPermission();
         resetTimer();
     }
-    if (!timer.isTimerRunning) {
+    if (!timer.isRunning) {
         return;
     }
 
