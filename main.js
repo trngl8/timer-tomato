@@ -47,6 +47,12 @@ function processTimer() {
     if (timer.isRunning === false) {
         // Start timer
         timer.timerId = setInterval(updateTimer, timer.timeout);
+
+        const timerWorker = new Worker('worker.js');
+        timerWorker.onmessage = function (event) {
+            console.log(`started worker at ${event.data}`);
+        };
+
         if (timer.startedAt === 0) {
             timer.startedAt = Date.now();
             console.log(`started at ${getTimeString(timer.time)}`);
